@@ -36,3 +36,4 @@ foreach ($u in $myServers) {
 
 }
 
+$myLog
