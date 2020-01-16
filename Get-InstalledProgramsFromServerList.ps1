@@ -41,4 +41,4 @@ foreach ($u in $myServers) {
 
 }
 
-$myLog
+$myLog | Out-GridView
