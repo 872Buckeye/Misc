@@ -1,9 +1,8 @@
 
 # One Computer Per Line
 $myServers = @"
-Server1
-Server2
-Server3
+JAX1EXCH01
+JAX1EXCH02
 "@ -split '\r?\n'.Trim()
 
 # One Search Per Line
@@ -17,15 +16,21 @@ $MyLog = @()
 
 foreach ($u in $myServers) {
 
+    write-host "Gathering info on" $u
+    $myGWMI = Get-WmiObject -ComputerName $u -Class win32_product
+
     foreach ($v in $mySearch) {
 
-        write-host $u $v
+        write-host "Searching" $v
 
-        foreach ($w in (Get-WmiObject -ComputerName $u -Class win32_product | ?{$_.Name -like '*$v*'})) {
+        $myVar = '*'+$v+'*'
 
-            write-host $w.Name "Found"
+        foreach ($w in ($myGWMI | ?{$_.Name -like $myVar})) {
+
+            write-host "Found" $w.Name
             $myItem = New-Object PSObject
             $myItem | Add-Member -type NoteProperty -Name 'Server' -Value $u
+            $myItem | Add-Member -type NoteProperty -Name 'Filter' -Value $v
             $myItem | Add-Member -type NoteProperty -Name 'Software' -Value $w.Name
             $myItem | Add-Member -type NoteProperty -Name 'Version' -Value $w.version
             $MyLog += $myItem        
