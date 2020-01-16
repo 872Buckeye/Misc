@@ -1,9 +1,9 @@
 
 # One Computer Per Line
 $myServers = @"
-JAX1EXCH01
-JAX1EXCH02
-JAX1EXCH03
+Server1
+Server2
+Server3
 "@ -split '\r?\n'.Trim()
 
 # One Search Per Line
